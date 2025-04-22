@@ -1,0 +1,36 @@
+const DnDClass = require('../models/DndClass');
+const { getSpellSlotsFullProgression } = require('./geminiService'); // Reutilizamos tu función que llama a Gemini
+
+async function findOrCreateDnDClass(className, level) {
+  try {
+
+    let dndClass = await DnDClass.findOne({ name: className });
+
+    if (dndClass) {
+      console.log(`✅ Clase ${className} encontrada en base de datos.`);
+      return dndClass;
+    }
+
+    console.log(`ℹ️ Clase ${className} no encontrada. Consultando a Gemini...`);
+
+    // Si no existe, pedimos a Gemini
+    const fullProgression = await getSpellSlotsFullProgression(className);
+
+    dndClass = await DnDClass.create({
+      name: className,
+      levels: fullProgression
+    });
+    
+    console.log(`✅ Clase ${className} guardada exitosamente.`);
+
+    return dndClass;
+  } catch (error) {
+    console.error('❌ Error en findOrCreateDnDClass:', error.message);
+    throw new Error('No se pudo obtener la información de la clase.');
+  }
+}
+
+module.exports = {
+  findOrCreateDnDClass,
+  getSpellSlotsFullProgression
+};

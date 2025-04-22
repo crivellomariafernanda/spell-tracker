@@ -1,0 +1,13 @@
+const DND_CLASSES = {
+  WIZARD: 'wizard',
+  CLERIC: 'cleric',
+  DRUID: 'druid',
+  PALADIN: 'paladin',
+  RANGER: 'ranger',
+  SORCERER: 'sorcerer',
+  WARLOCK: 'warlock',
+  BARD: 'bard',
+  ARTIFICER: 'artificer'
+};
+
+module.exports = { DND_CLASSES };
